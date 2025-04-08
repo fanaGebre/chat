@@ -123,7 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
     appendMessage(message, "user");
     userInput.value = "";
 
-    fetch("http://localhost:5000/chatbot", {
+    fetch("https://chat-hzpm.onrender.com/chatbot", {
+      // ✅ REPLACE THIS
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
