@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
   document.body.appendChild(chatContainer);
 
+  // Inject minimal styles
   const style = document.createElement("style");
   style.innerHTML = `
     #chatbot-btn {
@@ -102,7 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
   document.head.appendChild(style);
 
-  // Functionality
   const closeChatBtn = chatContainer.querySelector("#close-chat");
   const sendBtn = chatContainer.querySelector("#send-btn");
   const userInput = chatContainer.querySelector("#user-input");
