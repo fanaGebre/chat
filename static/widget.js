@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Create the Chat Button
   const chatBtn = document.createElement("div");
   chatBtn.id = "chatbot-btn";
   chatBtn.innerText = "💬 Chat";
   document.body.appendChild(chatBtn);
 
+  // Create the Chat Container (Initially Hidden)
   const chatContainer = document.createElement("div");
   chatContainer.id = "chat-container";
-  chatContainer.classList.add("hidden"); // chat starts hidden
+  chatContainer.classList.add("hidden");
   chatContainer.innerHTML = `
     <div class="chat-header">
         <span>Guahro AI Chatbot</span>
@@ -16,12 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="bot-message">Hello! How can I assist you today?</div>
     </div>
     <div class="input-container">
-        <input type="text" id="user-input" placeholder="Type your message...">
+        <input type="text" id="user-input" placeholder="Type your message..." />
         <button id="send-btn">Send</button>
     </div>
   `;
   document.body.appendChild(chatContainer);
 
+  // Inline Styles
   const style = document.createElement("style");
   style.innerHTML = `
     #chatbot-btn {
@@ -35,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
       cursor: pointer;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
       font-weight: bold;
-      z-index: 999;
+      z-index: 9999;
     }
     #chat-container {
       position: fixed;
@@ -48,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      z-index: 999;
+      z-index: 9999;
     }
     .hidden {
       display: none;
@@ -102,13 +105,12 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
   document.head.appendChild(style);
 
-  // Elements for interaction
+  // Chat functionality
   const closeChatBtn = chatContainer.querySelector("#close-chat");
   const sendBtn = chatContainer.querySelector("#send-btn");
   const userInput = chatContainer.querySelector("#user-input");
   const chatBox = chatContainer.querySelector("#chat-box");
 
-  // Add message to chat
   function appendMessage(text, sender) {
     const msgDiv = document.createElement("div");
     msgDiv.classList.add(sender === "bot" ? "bot-message" : "user-message");
@@ -117,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  // Send message to backend
   function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
@@ -135,22 +136,18 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(() => appendMessage("Error: Unable to reach chatbot.", "bot"));
   }
 
-  // Show chat on click
+  // Show chatbox when button clicked
   chatBtn.onclick = () => {
-    chatContainer.classList.remove("hidden"); // show chat window
-    chatBtn.style.display = "none"; // hide button
+    chatContainer.classList.remove("hidden");
   };
 
-  // Hide chat on close
+  // Hide chatbox when ❌ is clicked (button remains)
   closeChatBtn.onclick = () => {
-    chatContainer.classList.add("hidden"); // hide chat window
-    chatBtn.style.display = "block"; // show button
+    chatContainer.classList.add("hidden");
   };
 
-  // Send button click
+  // Send on button click or Enter key
   sendBtn.onclick = sendMessage;
-
-  // Press Enter to send
   userInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
   });
