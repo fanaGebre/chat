@@ -1,11 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Create the Chat Button
   const chatBtn = document.createElement("div");
   chatBtn.id = "chatbot-btn";
   chatBtn.innerText = "💬 Chat";
   document.body.appendChild(chatBtn);
 
-  // Create the Chat Container (Initially Hidden)
   const chatContainer = document.createElement("div");
   chatContainer.id = "chat-container";
   chatContainer.classList.add("hidden");
@@ -18,13 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="bot-message">Hello! How can I assist you today?</div>
     </div>
     <div class="input-container">
-        <input type="text" id="user-input" placeholder="Type your message..." />
+        <input type="text" id="user-input" placeholder="Type your message...">
         <button id="send-btn">Send</button>
     </div>
   `;
   document.body.appendChild(chatContainer);
 
-  // Inline Styles
+  // Inject minimal styles
   const style = document.createElement("style");
   style.innerHTML = `
     #chatbot-btn {
@@ -38,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
       cursor: pointer;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
       font-weight: bold;
-      z-index: 9999;
+      z-index: 999;
     }
     #chat-container {
       position: fixed;
@@ -51,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      z-index: 9999;
+      z-index: 999;
     }
     .hidden {
       display: none;
@@ -105,7 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
   document.head.appendChild(style);
 
-  // Chat functionality
   const closeChatBtn = chatContainer.querySelector("#close-chat");
   const sendBtn = chatContainer.querySelector("#send-btn");
   const userInput = chatContainer.querySelector("#user-input");
@@ -133,20 +130,11 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((res) => res.json())
       .then((data) => appendMessage(data.response, "bot"))
-      .catch(() => appendMessage("Error: Unable to reach chatbot.", "bot"));
+      .catch((err) => appendMessage("Error: Unable to reach chatbot.", "bot"));
   }
 
-  // Show chatbox when button clicked
-  chatBtn.onclick = () => {
-    chatContainer.classList.remove("hidden");
-  };
-
-  // Hide chatbox when ❌ is clicked (button remains)
-  closeChatBtn.onclick = () => {
-    chatContainer.classList.add("hidden");
-  };
-
-  // Send on button click or Enter key
+  chatBtn.onclick = () => chatContainer.classList.toggle("hidden");
+  closeChatBtn.onclick = () => chatContainer.classList.add("hidden");
   sendBtn.onclick = sendMessage;
   userInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
