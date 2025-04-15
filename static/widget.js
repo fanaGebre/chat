@@ -1,4 +1,4 @@
-// Guahro AI Chatbot Widget - Smaller size with open-by-default
+// Guahro AI Chatbot Widget - Horizontal loading dots & fixed message alignment
 document.addEventListener("DOMContentLoaded", function () {
   // 1. Create Chat Button (hidden since box is open by default)
   const chatBtn = document.createElement("div");
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   chatBtn.style.display = "none";
   document.body.appendChild(chatBtn);
 
-  // 2. Create Smaller Chat Container (visible by default)
+  // 2. Create Chat Container (visible by default)
   const chatContainer = document.createElement("div");
   chatContainer.id = "guahro-chatbot-container";
   chatContainer.innerHTML = `
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   `;
   document.body.appendChild(chatContainer);
 
-  // 3. Add Styles - Smaller Version
+  // 3. Add Styles - Horizontal dots & fixed alignment
   const style = document.createElement("style");
   style.textContent = `
     /* Chat Button (hidden) */
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #22577A;
+      background: #318fa1;
       color: white;
       padding: 10px 16px;
       border-radius: 20px;
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
       font-size: 14px;
     }
 
-    /* Smaller Chat Container */
+    /* Chat Container */
     #guahro-chatbot-container {
       position: fixed;
       bottom: 70px;
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* Header */
     .guahro-chat-header {
-      background: #22577A;
+      background: #318fa1;
       color: white;
       padding: 12px;
       display: flex;
@@ -80,17 +80,21 @@ document.addEventListener("DOMContentLoaded", function () {
       line-height: 1;
     }
 
-    /* Chat Box */
+    /* Chat Box with fixed message alignment */
     .guahro-chat-box {
       height: 300px;
       padding: 10px;
       overflow-y: auto;
       background: #f8f9fa;
       flex-grow: 1;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Messages */
-    .guahro-bot-message, .guahro-user-message {
+    /* Messages - Fixed alignment */
+    .guahro-bot-message {
+      background: #e3f2fd;
+      align-self: flex-start;
       max-width: 80%;
       padding: 8px 12px;
       margin: 6px 0;
@@ -98,14 +102,16 @@ document.addEventListener("DOMContentLoaded", function () {
       font-size: 13px;
       line-height: 1.4;
     }
-    .guahro-bot-message {
-      background: #e3f2fd;
-      align-self: flex-start;
-    }
     .guahro-user-message {
-      background: #22577A;
+      background: #318fa1;
       color: white;
       align-self: flex-end;
+      max-width: 80%;
+      padding: 8px 12px;
+      margin: 6px 0;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     /* Input Area */
@@ -125,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
     #guahro-send-btn {
       padding: 8px 12px;
       margin-left: 8px;
-      background: #22577A;
+      background: #318fa1;
       color: white;
       border: none;
       border-radius: 15px;
@@ -133,27 +139,41 @@ document.addEventListener("DOMContentLoaded", function () {
       cursor: pointer;
     }
 
-    /* Loading Dots */
+    /* Horizontal Loading Dots */
     .guahro-loading {
       background: #e3f2fd !important;
       padding: 8px 12px !important;
+      width: 60px;
+      overflow: hidden;
     }
     .guahro-loading-dots {
       display: flex;
-      gap: 4px;
+      width: 100%;
+      position: relative;
       height: 12px;
-      align-items: center;
     }
     .guahro-loading-dot {
+      position: absolute;
       width: 6px;
       height: 6px;
-      background: #22577A;
+      background: #318fa1;
       border-radius: 50%;
-      animation: guahro-bounce 1.4s infinite both;
+      animation: guahro-slide 1.5s infinite ease-in-out;
     }
-    @keyframes guahro-bounce {
-      0%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-4px); }
+    .guahro-loading-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .guahro-loading-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .guahro-loading-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes guahro-slide {
+      0% { transform: translateX(-15px); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateX(60px); opacity: 0; }
     }
   `;
   document.head.appendChild(style);
@@ -181,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const message = userInput.value.trim();
     if (!message) return;
 
-    // Add user message
+    // Add user message (aligned right)
     const userMsg = document.createElement("div");
     userMsg.className = "guahro-user-message";
     userMsg.textContent = message;
@@ -190,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Clear input
     userInput.value = "";
 
-    // Add loading indicator
+    // Add loading indicator (aligned left with horizontal dots)
     const loading = document.createElement("div");
     loading.className = "guahro-bot-message guahro-loading";
     loading.innerHTML = `
