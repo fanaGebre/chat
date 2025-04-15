@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 1. Create Chat Button (hidden since box is open by default)
   const chatBtn = document.createElement("div");
   chatBtn.id = "guahro-chatbot-btn";
-  chatBtn.innerHTML = `💬 Chat`;
+  chatBtn.innerHTML = `💬 Guahro AI`;
   chatBtn.style.display = "none";
   document.body.appendChild(chatBtn);
 
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   chatContainer.id = "guahro-chatbot-container";
   chatContainer.innerHTML = `
     <div class="guahro-chat-header">
-      <div class="guahro-chat-title">Guahro AI</div>
+      <div class="guahro-chat-title">Guahro AI Agent</div>
       <button id="guahro-close-chat" class="guahro-close-btn">&times;</button>
     </div>
     <div class="guahro-chat-box" id="guahro-chat-box">
