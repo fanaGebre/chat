@@ -1,197 +1,241 @@
+// Guahro AI Chatbot Widget - Smaller size with open-by-default
 document.addEventListener("DOMContentLoaded", function () {
+  // 1. Create Chat Button (hidden since box is open by default)
   const chatBtn = document.createElement("div");
-  chatBtn.id = "chatbot-btn";
-  chatBtn.innerText = "💬 Chat";
+  chatBtn.id = "guahro-chatbot-btn";
+  chatBtn.innerHTML = `💬 Chat`;
+  chatBtn.style.display = "none";
   document.body.appendChild(chatBtn);
 
+  // 2. Create Smaller Chat Container (visible by default)
   const chatContainer = document.createElement("div");
-  chatContainer.id = "chat-container";
-  chatContainer.classList.add("hidden");
+  chatContainer.id = "guahro-chatbot-container";
   chatContainer.innerHTML = `
-    <div class="chat-header">
-        <span>Guahro AI Chatbot</span>
-        <button id="close-chat">&times;</button>
+    <div class="guahro-chat-header">
+      <div class="guahro-chat-title">Guahro AI</div>
+      <button id="guahro-close-chat" class="guahro-close-btn">&times;</button>
     </div>
-    <div class="chat-box" id="chat-box">
-        <div class="bot-message">Hello! How can I assist you today?</div>
+    <div class="guahro-chat-box" id="guahro-chat-box">
+      <div class="guahro-bot-message">Hello! How can I help you?</div>
     </div>
-    <div class="input-container">
-        <input type="text" id="user-input" placeholder="Type your message...">
-        <button id="send-btn">Send</button>
+    <div class="guahro-input-area">
+      <input type="text" id="guahro-user-input" placeholder="Type your message..." autocomplete="off">
+      <button id="guahro-send-btn">Send</button>
     </div>
   `;
   document.body.appendChild(chatContainer);
 
+  // 3. Add Styles - Smaller Version
   const style = document.createElement("style");
-  style.innerHTML = `
-    #chatbot-btn {
+  style.textContent = `
+    /* Chat Button (hidden) */
+    #guahro-chatbot-btn {
+      display: none;
       position: fixed;
       bottom: 20px;
       right: 20px;
       background: #22577A;
       color: white;
-      padding: 12px 20px;
-      border-radius: 50px;
+      padding: 10px 16px;
+      border-radius: 20px;
       cursor: pointer;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-      font-weight: bold;
-      z-index: 999;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 9999;
+      font-size: 14px;
     }
-    #chat-container {
+
+    /* Smaller Chat Container */
+    #guahro-chatbot-container {
       position: fixed;
-      bottom: 80px;
+      bottom: 70px;
       right: 20px;
-      width: 320px;
+      width: 300px;
+      height: 400px;
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      z-index: 999;
+      z-index: 9998;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
-    .hidden {
-      display: none;
-    }
-    .chat-header {
+
+    /* Header */
+    .guahro-chat-header {
       background: #22577A;
       color: white;
-      padding: 10px;
+      padding: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 14px;
     }
-    .chat-box {
-      height: 260px;
-      overflow-y: auto;
-      padding: 10px;
-      background: #f1f1f1;
-    }
-    .input-container {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #ccc;
-    }
-    .input-container input {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    .input-container button {
-      padding: 8px 14px;
-      background: #219aa3;
-      color: white;
+    .guahro-close-btn {
+      background: transparent;
       border: none;
-      border-radius: 6px;
-      margin-left: 6px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
     }
-    .bot-message, .user-message {
-      margin: 5px 0;
+
+    /* Chat Box */
+    .guahro-chat-box {
+      height: 300px;
+      padding: 10px;
+      overflow-y: auto;
+      background: #f8f9fa;
+      flex-grow: 1;
+    }
+
+    /* Messages */
+    .guahro-bot-message, .guahro-user-message {
+      max-width: 80%;
       padding: 8px 12px;
-      border-radius: 8px;
-      max-width: 90%;
-      word-wrap: break-word;
+      margin: 6px 0;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.4;
     }
-    .bot-message {
-      background: #dff6ff;
+    .guahro-bot-message {
+      background: #e3f2fd;
       align-self: flex-start;
     }
-    .user-message {
-      background: #a3d2ca;
+    .guahro-user-message {
+      background: #22577A;
+      color: white;
       align-self: flex-end;
     }
-    .loading-dots {
-      display: inline-block;
-      width: 40px;
+
+    /* Input Area */
+    .guahro-input-area {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #eee;
+      background: white;
     }
-    .loading-dots span {
-      display: inline-block;
+    #guahro-user-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+      font-size: 13px;
+    }
+    #guahro-send-btn {
+      padding: 8px 12px;
+      margin-left: 8px;
+      background: #22577A;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* Loading Dots */
+    .guahro-loading {
+      background: #e3f2fd !important;
+      padding: 8px 12px !important;
+    }
+    .guahro-loading-dots {
+      display: flex;
+      gap: 4px;
+      height: 12px;
+      align-items: center;
+    }
+    .guahro-loading-dot {
       width: 6px;
       height: 6px;
-      margin: 0 2px;
       background: #22577A;
       border-radius: 50%;
-      animation: blink 1.4s infinite both;
+      animation: guahro-bounce 1.4s infinite both;
     }
-    .loading-dots span:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-    .loading-dots span:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-    @keyframes blink {
-      0%, 80%, 100% { opacity: 0; }
-      40% { opacity: 1; }
+    @keyframes guahro-bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-4px); }
     }
   `;
   document.head.appendChild(style);
 
-  const closeChatBtn = chatContainer.querySelector("#close-chat");
-  const sendBtn = chatContainer.querySelector("#send-btn");
-  const userInput = chatContainer.querySelector("#user-input");
-  const chatBox = chatContainer.querySelector("#chat-box");
+  // 4. Chat Functionality
+  const chatBox = document.getElementById("guahro-chat-box");
+  const userInput = document.getElementById("guahro-user-input");
 
-  function appendMessage(text, sender) {
-    const msgDiv = document.createElement("div");
-    msgDiv.classList.add(sender === "bot" ? "bot-message" : "user-message");
-    msgDiv.textContent = text;
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
+  // Close button shows the chat button
+  document
+    .getElementById("guahro-close-chat")
+    .addEventListener("click", function () {
+      chatContainer.style.display = "none";
+      chatBtn.style.display = "block";
+    });
 
-  function showLoading() {
-    const loadingDiv = document.createElement("div");
-    loadingDiv.classList.add("bot-message", "loading");
-    loadingDiv.id = "loading-indicator";
-    loadingDiv.innerHTML = `
-      <div class="loading-dots">
-        <span></span><span></span><span></span>
-      </div>
-    `;
-    chatBox.appendChild(loadingDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  function removeLoading() {
-    const loading = document.getElementById("loading-indicator");
-    if (loading) loading.remove();
-  }
+  // Chat button reopens the chat
+  chatBtn.addEventListener("click", function () {
+    chatContainer.style.display = "flex";
+    chatBtn.style.display = "none";
+    userInput.focus();
+  });
 
   function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
 
-    appendMessage(message, "user");
-    userInput.value = "";
-    showLoading();
+    // Add user message
+    const userMsg = document.createElement("div");
+    userMsg.className = "guahro-user-message";
+    userMsg.textContent = message;
+    chatBox.appendChild(userMsg);
 
+    // Clear input
+    userInput.value = "";
+
+    // Add loading indicator
+    const loading = document.createElement("div");
+    loading.className = "guahro-bot-message guahro-loading";
+    loading.innerHTML = `
+      <div class="guahro-loading-dots">
+        <div class="guahro-loading-dot"></div>
+        <div class="guahro-loading-dot"></div>
+        <div class="guahro-loading-dot"></div>
+      </div>
+    `;
+    chatBox.appendChild(loading);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Send to your API
     fetch("https://chat-hzpm.onrender.com/chatbot", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     })
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => {
-        removeLoading();
-        appendMessage(data.response, "bot");
+        loading.remove();
+        const botMsg = document.createElement("div");
+        botMsg.className = "guahro-bot-message";
+        botMsg.textContent = data.response;
+        chatBox.appendChild(botMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
       })
-      .catch(() => {
-        removeLoading();
-        appendMessage("Error: Unable to reach chatbot.", "bot");
+      .catch((error) => {
+        loading.remove();
+        const errorMsg = document.createElement("div");
+        errorMsg.className = "guahro-bot-message";
+        errorMsg.textContent = "Sorry, I'm having trouble connecting.";
+        chatBox.appendChild(errorMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
       });
   }
 
-  chatBtn.onclick = () => {
-    chatContainer.classList.remove("hidden");
-  };
-
-  closeChatBtn.onclick = () => {
-    chatContainer.classList.add("hidden");
-  };
-
-  sendBtn.onclick = sendMessage;
-  userInput.addEventListener("keypress", (e) => {
+  // Send message events
+  document
+    .getElementById("guahro-send-btn")
+    .addEventListener("click", sendMessage);
+  userInput.addEventListener("keypress", function (e) {
     if (e.key === "Enter") sendMessage();
   });
+
+  // Focus input on load
+  userInput.focus();
 });
